@@ -1,0 +1,42 @@
+From ef7c7512865a842a54297820f787cb089eba2375 Mon Sep 17 00:00:00 2001
+From: hacker1024 <hacker1024@users.sourceforge.net>
+Date: Wed, 18 Jan 2023 19:16:26 +1000
+Subject: [PATCH] HID: Ignore battery for Elan touchscreen on Dell Inspiron
+ 7586
+
+Battery status on Elan tablet driver is reported for the Dell Inspiron 7586.
+There is no separate battery for the Elan controller resulting in a
+battery level report of 0% or 1% depending on whether a stylus has interacted
+with the screen. These low battery level reports causes a variety of bad
+behavior in desktop environments. This patch adds the appropriate quirk to
+indicate that the batery status is unused for this target.
+---
+ drivers/hid/hid-ids.h   | 1 +
+ drivers/hid/hid-input.c | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 8f58c3c1bec31f..3a9a55600773ca 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -418,6 +418,7 @@
+ #define I2C_DEVICE_ID_SURFACE_GO_TOUCHSCREEN	0x261A
+ #define I2C_DEVICE_ID_SURFACE_GO2_TOUCHSCREEN	0x2A1C
+ #define I2C_DEVICE_ID_LENOVO_YOGA_C630_TOUCHSCREEN	0x279F
++#define I2C_DEVICE_ID_DELL_INSPIRON_7586_TOUCHSCREEN	0x2784
+ 
+ #define USB_VENDOR_ID_ELECOM		0x056e
+ #define USB_DEVICE_ID_ELECOM_BM084	0x0061
+diff --git a/drivers/hid/hid-input.c b/drivers/hid/hid-input.c
+index 859aeb07542e3a..012de209c6c840 100644
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -385,6 +385,8 @@ static const struct hid_device_id hid_battery_quirks[] = {
+ 	  HID_BATTERY_QUIRK_IGNORE },
+ 	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_LENOVO_YOGA_C630_TOUCHSCREEN),
+ 	  HID_BATTERY_QUIRK_IGNORE },
++	{ HID_I2C_DEVICE(USB_VENDOR_ID_ELAN, I2C_DEVICE_ID_DELL_INSPIRON_7586_TOUCHSCREEN),
++	  HID_BATTERY_QUIRK_IGNORE },
+ 	{}
+ };
+ 
