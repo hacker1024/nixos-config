@@ -106,4 +106,9 @@
       settings.General.Experimental = true;
     };
   };
+
+  virtualization.virtualbox.host = {
+    enable = true;
+    enableExtensionPack = true;
+  };
 }
