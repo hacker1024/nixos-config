@@ -107,7 +107,19 @@
     };
   };
 
-  virtualization.virtualbox.host = {
+  services.xserver = {
+    enable = true;
+    videoDrivers = [ "modesetting" "nvidia" ];
+    layout = "au";
+    displayManager.sddm.enable = true;
+    desktopManager.plasma5 = {
+      enable = true;
+      supportDDC = false;
+    };
+    displayManager.defaultSession = "plasmawayland";
+  };
+
+  virtualisation.virtualbox.host = {
     enable = true;
     enableExtensionPack = true;
   };
