@@ -13,14 +13,6 @@ jobs:
         device:
           - "inspiron7586"
     steps:
-      - run: sudo mkdir /nix
-      - uses: easimon/maximize-build-space@v6
-        with:
-          root-reserve-mb: 2048
-          build-mount-path: /nix
-          remove-dotnet: true
-          remove-android: true
-          remove-haskell: true
       - uses: actions/checkout@v3
       - uses: cachix/install-nix-action@v18
         with:
